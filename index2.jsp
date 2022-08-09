@@ -26,6 +26,7 @@
     <meta name="keywords" content="Cake, unica, creative, html">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+   
     <title>Dairy Products</title>
 
     <!-- Google Font -->
@@ -45,6 +46,15 @@
     <link rel="stylesheet" href="css/owl.carousel.min.css" type="text/css">
     <link rel="stylesheet" href="css/slicknav.min.css" type="text/css">
     <link rel="stylesheet" href="css/style.css" type="text/css">
+    <style>
+        .btn{
+            position: absolute;
+            top:216px;
+            left:328px;
+            display:flex;
+            background: transparent;
+        }
+    </style>
 </head>
 
 <body>
@@ -94,12 +104,12 @@
                 </div>
                 </div>
                <div class="header__top__left">
-                                <ul>
+<!--                                <ul>
                                    
                                     <li style = "color: #fff">Logout<span  style = "color: #fff" class="arrow_carrot-down"></span>
                                         <ul>
                                             <li></li>
-                                           
+                                           -->
 <!--                                        </ul>
                                     </li>
                                     <li><a style = "color: #fff" href="#">Sign in</a> <span  style = "color: #fff" class="arrow_carrot-down"></span></li>
@@ -125,12 +135,12 @@
                             </div>
                             <div class="header__top__right">
                                 <div class="header__top__right__links">
-                                    <a href="#" class="search-switch"><img src="img/icon/search.png" alt=""></a>
-                                    <a href="#"><img src="img/icon/heart.png" alt=""></a>
+                                    <a href="#" class="search-switch"></a>
+                                    <a href="#"></a>
                                 </div>
                                 <div class="header__top__right__cart">
-                                    <a href="#"><img src="img/icon/cart.png" alt=""> <span>0</span></a>
-                                    <div class="cart__price">Cart: <span>0.shs</span></div>
+                                    <p>To Buy products <a href="index.jsp">Click here</a></p>
+<!--                                    <div class="cart__price">Cart: <span>0.shs</span></div>-->
                                 </div>
                             </div>
                         </div>
@@ -185,8 +195,21 @@
                                      <option value=""> Yogurt Varieties</option>
                                 </select>
                                 <input type="text" placeholder="Search">
-                                <button type="submit"><i class="fa fa-search"></i></button>
+                            
+                               
                             </form>
+                             <button type="submit"><i class="fa fa-search"></i></button>
+                                <script>
+                                    var btnvar = document.getElementById("btn1");
+                                    
+                                    function toggle(){
+                                        if(btnvar.style.color == "red"){
+                                            btnvar.style.color = "grey"
+                                        }else {
+                                            btnvar.style.color ="red"
+                                        }
+                                    }
+                                </script>
                         </div>
                     </div>
 <!--                    <div class="col-lg-5 col-md-5">
@@ -227,11 +250,12 @@
                             <div class="product__item__price">shs <%out.println(rs.getString("UnitPrice"));%></div>
                              <div class="product__item__price"><%out.println(rs.getString("Likes"));%> likes</div>
                             <div class="cart_add">
+                                <button onclick="toggle()" id="btn1" class="btn"> <i class="fa-solid fa-heart"></i></button>
                                 <form action="AddToCart" method="POST">
                                
                                 <input type="hidden" name="productName" value="<%out.println(rs.getString("ProductName"));%>">
                                 <input type="hidden" name="productPrice" value="<%out.println(rs.getString("UnitPrice"));%>">
-                                <label> Quantity(Kgs/Liter)</label>
+<!--                                <label> Quantity(Kgs/Liter)</label>
                                    <select name="quantityorder">
                                        <option value="1">1</option>
                                        <option value="2">2</option>
@@ -243,8 +267,8 @@
                                        <option value="8">8</option>
                                        <option value="9">9</option>
                                        <option value="10">10</option>
-                                   </select>
-                                <button type="submit " class="">Add to Cart</button>
+                                   </select>-->
+                                <!--<button type="submit " class="">Add to Cart</button>-->
                    
          
                             </div>
@@ -257,7 +281,7 @@
                 <% } %> 
             <!--start Of Ice cream section-->
 
-            <h2 class="text-center">Would You Like To Buy?</h2>
+<!--            <h2 class="text-center">Would You Like To Buy?</h2>-->
 
             
 <!--                
