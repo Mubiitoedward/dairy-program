@@ -4,28 +4,27 @@
  */
 package AddProducts;
 
+import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.*;
 /**
  *
- * @author MR. DEE
+ * @author Gilbert
  */
-public class AddCustomer extends HttpServlet {
+@WebServlet(name = "BuyProducts", urlPatterns = {"/BuyProducts"})
+public class BuyProducts extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+   
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -34,10 +33,38 @@ public class AddCustomer extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet AddCustomer</title>");            
+            out.println("<title>Servlet AddToSales</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet AddCustomer at " + request.getContextPath() + "</h1>");
+            
+            try{
+                Class.forName("com.mysql.jdbc.Driver");
+                 try{     
+                    Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/dairyproduction","root","");
+                    Statement st= conn.createStatement();
+                     ResultSet rs = st.executeQuery("Select * from cart where CustomerID='"+"1"+"'");
+                     
+                     while(rs.next()){
+                         int P = Integer.parseInt(rs.getString("OrderPrice"));
+                         int Q = Integer.parseInt(rs.getString("OrderQuantity"));
+                         int Total = P*Q;
+                         String OID=rs.getString("OrderID");
+                         String PName=rs.getString("ProductName");
+                         String OQuantity=rs.getString("OrderQuantity");
+                         String CID=rs.getString("CustomerID");
+                         st.executeUpdate("insert into sales(OrderID,ProductName,OrderQuantity,SalesTotal,CustomerID)values('"+OID+"','"+PName+"','"+OQuantity+"','"+Total+"','"+CID+"')");
+                          st.executeUpdate("Delete From cart where OrderID='"+OID+"'");
+                     }
+                    
+                }catch(SQLException es){
+                out.println(es.getMessage());
+                }
+                
+            }catch(ClassNotFoundException e){
+                out.println(e.getMessage());
+            }
+            RequestDispatcher dispatcher=request.getRequestDispatcher("FindCart.jsp");
+           dispatcher.forward(request,response);
             out.println("</body>");
             out.println("</html>");
         }

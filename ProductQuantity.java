@@ -1,31 +1,23 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/Servlet.java to edit this template
- */
+
 package AddProducts;
 
+import jakarta.servlet.RequestDispatcher;
 import java.io.IOException;
 import java.io.PrintWriter;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.WebServlet;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 
-/**
- *
- * @author MR. DEE
- */
-public class AddCustomer extends HttpServlet {
+@WebServlet(name = "Quantity", urlPatterns = {"/Quantity"})
+public class ProductQuantity extends HttpServlet {
 
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+   
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
@@ -34,10 +26,35 @@ public class AddCustomer extends HttpServlet {
             out.println("<!DOCTYPE html>");
             out.println("<html>");
             out.println("<head>");
-            out.println("<title>Servlet AddCustomer</title>");            
+            out.println("<title>Servlet Quantity</title>");            
             out.println("</head>");
             out.println("<body>");
-            out.println("<h1>Servlet AddCustomer at " + request.getContextPath() + "</h1>");
+            
+            String pQuant = request.getParameter("quant");
+            int Mid = 2*Integer.parseInt(pQuant);
+            int Short = 5*Mid;
+            String pQuant1 = Integer.toString(Mid);
+            String pQuant2 = Integer.toString(Short);
+            
+            try{
+                Class.forName("com.mysql.jdbc.Driver");
+                 try{     
+                    Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/dairyproduction","root","");
+                    Statement st= conn.createStatement();
+                    st.executeUpdate("Update productstable SET ProductQuantity="+pQuant+" where ProductType='"+"Long-term"+"'");
+                    st.executeUpdate("Update productstable SET ProductQuantity="+pQuant1+" where ProductType='"+"Mid-term"+"'");
+                   st.executeUpdate("Update productstable SET ProductQuantity="+pQuant2+" where ProductType='"+"Short-term"+"'");
+                }catch(SQLException es){
+                out.println(es.getMessage());
+                }
+                
+            }catch(ClassNotFoundException e){
+                out.println(e.getMessage());
+            }
+            
+            RequestDispatcher dispatcher=request.getRequestDispatcher("AddingProducts.jsp");
+            dispatcher.forward(request,response);
+            //out.println("<h1>Servlet Quantity at " + request.getContextPath() + "</h1>");
             out.println("</body>");
             out.println("</html>");
         }
